@@ -91,7 +91,8 @@ class Lead
     public static function updateLead($data)
     {
         $updatedFields = [
-            'lead_name' => $data['lead_name']
+            'lead_name' => $data['lead_name'],
+            'lead_phone' => $data['lead_phone']
         ];
         return BLL::updateItemById(self::lead_table,  $data['id'], $updatedFields);
     }

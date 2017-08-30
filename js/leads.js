@@ -2,7 +2,8 @@ function updateLead(){
 
     var data = {
         id: $( "#leadID" ).val(),
-        lead_name : $('#leadName').val()
+        lead_name : $('#leadName').val(),
+        lead_phone: $('#leadPhone').val()
     }
     $.post( "../ajax.php", { action: "updateLead", data: data }, function( result ) {
 
