@@ -46,6 +46,7 @@ public static function getAll($table){
         return $row;
 
     }
+    
     public static function getAllIds($table){
 
         $connection = Connection::getInstance();
@@ -61,6 +62,33 @@ public static function getAll($table){
 
         return $result;
 
+    }
+
+    public static function deleteItemById($table, $id){
+        $connection = Connection::getInstance();
+        $db = $connection->getDB();
+        $stmt = $db->prepare('DELETE FROM ' .  $table . ' WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        return 0;
+    }
+
+    public static function createItem($table, $data){
+        $connection = Connection::getInstance();
+        $db = $connection->getDB();
+        $str1 = implode(",", array_keys($data));
+        $str2 = ':' . implode(",:", array_keys($data)) ;
+        // INSERT INTO proj_employee (name_of_employee,start_of_job) values  (:name_of_employee,:start_of_job)
+
+        $query = "INSERT INTO " .  $table . " (" . $str1 . ") values (" . $str2 . ")";
+        $stmt = $db->prepare($query);
+        $stmt->execute($data);
+
+        $id = $db->lastInsertId();
+        if($id){
+            return $id;
+        }
+
+        return false;
     }
 
 }

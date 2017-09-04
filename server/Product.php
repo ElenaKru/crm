@@ -20,9 +20,27 @@ class Product
 
     }
 
+    public static function updateProduct($data)
+    {
+        $updatedFields = [
+            'product_name' => $data['product_name']
+        ];
+        return BLL::updateItemById(self::Product_table,  $data['id'], $updatedFields);
+    }
+
+
+    public static function deleteProduct($id)
+    {
+        return BLL::deleteItemById(self::Product_table, $id);
+
+    }
+
+    public static function createProduct($data)
+    {
+        $createdFields = [
+            'product_name' => $data['product_name']
+        ];
+        return BLL::createItem(self::Product_table, $createdFields);
+    }
 }
-
-
-
-
 ?>

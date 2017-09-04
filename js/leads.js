@@ -1,25 +1,37 @@
-function updateLead(){
-
-    var data = {
-        id: $( "#leadID" ).val(),
-        lead_name : $('#leadName').val(),
-        lead_phone: $('#leadPhone').val()
-    }
-    $.post( "../ajax.php", { action: "updateLead", data: data }, function( result ) {
-
-        // $.each( result.data, function() {
-        //     $('#result').append('ID: ' + this.id + ' NAME: ' + this.lead_name + ' PHONE: ' + this.lead_phone + ' PRODUCT_id: ' + this.product_id + '<br/>');
-        // });
-    }, "json");
-}
-
 function getLeads(){
-    $.post( "../ajax.php", { action: "getLeads" }, function( result ) {
+    $.get( "../lead-api.php", { action: "getLeads" }, function( result ) {
         $.each( result.data, function() {
             $('#result').append('ID: ' + this.id + ' NAME: ' + this.lead_name + ' PHONE: ' + this.lead_phone + ' PRODUCT_id: ' + this.product_id + '<br/>');
         });
     }, "json");
 }
+
+
+
+function updateLead(){
+
+    var data = {
+        id: $( "#leadID" ).val(),
+        lead_name : $('#leadName').val(),
+        lead_phone: $('#leadPhone').val(),
+        product_id: $('#productID').val()
+    };
+    $.ajax(
+        {
+            url:"../lead-api.php",
+            type: 'PUT',
+            data:  { action: "updateLead", data: data },
+            dataType: "json",
+            success: function(result) {
+                if(result.status == 0){
+                    alert ('USER WAS UPDATED SUCCESSFULLY');
+                } else {
+                    alert('ERROR');
+                }
+            }
+        });
+}
+
 
 function initForm(){
     getLeadsIds();
@@ -27,7 +39,7 @@ function initForm(){
 }
 
 function getProductsIds(){
-    $.post( "../ajax.php", { action: "getProductsIds" }, function( result ) {
+    $.get( "../lead-api.php", { action: "getProductsIds" }, function( result ) {
         $.each( result.data, function() {
             $('#productID').append($('<option>', {
                 value: this.id,
@@ -40,7 +52,7 @@ function getProductsIds(){
 
 
 function getLeadsIds(){
-    $.post( "../ajax.php", { action: "getLeadsIds" }, function( result ) {
+    $.get( "../lead-api.php", { action: "getLeadsIds" }, function( result ) {
         $.each( result.data, function() {
            $('#leadID').append($('<option>', {
                value: this.id,
@@ -58,7 +70,7 @@ function fillForm(data){
 }
 
 function getLeadById(id, callBack){
-    $.post( "../ajax.php", { action: "getLeadById", id : id }, function( result ) {
+    $.get( "../lead-api.php", { action: "getLeadById", id : id }, function( result ) {
         callBack(result.data);
     }, "json");
 }
@@ -71,3 +83,37 @@ $( "#leadID" ).change(function(e) {
     getLeadById(valueSelected, fillForm);
 
 });
+
+function deleteLead(){
+    $.ajax(
+        {
+            url:"../lead-api.php",
+            type: 'DELETE',
+            data:  { action: "deleteLeadById", id: $( "#leadID" ).val()},
+            dataType: "json",
+            success: function(result) {
+                if(result.status == 0){
+                    alert ('USER WAS DELETED SUCCESSFULLY')
+                } else {
+                    alert('ERROR');
+                }
+            }
+        });
+}
+
+
+function createLead(){
+    
+        var data = {
+            lead_name : $('#leadName').val(),
+            lead_phone: $('#leadPhone').val(),
+            product_id: $('#productID').val()
+        }
+        $.post( "../lead-api.php", { action: "createLead", data: data }, function( result ) {
+            if(result.status == 0){
+                alert ('USER WAS CREATED SUCCESSFULLY')
+            } else {
+                alert('ERROR');
+            }
+        }, "json");
+    }

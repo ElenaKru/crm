@@ -92,7 +92,8 @@ class Lead
     {
         $updatedFields = [
             'lead_name' => $data['lead_name'],
-            'lead_phone' => $data['lead_phone']
+            'lead_phone' => $data['lead_phone'],
+            'product_id' => $data['product_id']
         ];
         return BLL::updateItemById(self::lead_table,  $data['id'], $updatedFields);
     }
@@ -102,9 +103,22 @@ class Lead
         return BLL::getAll(self::Product_table);
 
     }
+
+    public static function deleteLeadById($id)
+    {
+        return BLL::deleteItemById(self::lead_table, $id);
+
+    }
+
+    public static function createLead($data)
+    {
+        $createdFields = [
+            'lead_name' => $data['lead_name'],
+            'lead_phone' => $data['lead_phone'],
+            'product_id' => $data['product_id']
+        ];
+        return BLL::createItem(self::lead_table, $createdFields);
+    }
 }
-
-
-
 
 ?>
